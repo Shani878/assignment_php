@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .game-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            width: 50px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        p {
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .result {
+            font-weight: bold;
+        }
+
+        .game-over {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="game-container">
+    <h1>Guess the Number</h1>
+    <p>I'm thinking of a number between 1 and 50. You have 5 attempts!</p>
+    <input type="number" id="guess" placeholder="Your guess" min="1" max="50">
+    <br>
+    <button onclick="checkGuess()">Submit Guess</button>
+    <p class="result" id="result"></p>
+    <p id="attempts">Attempts left: 5</p>
+</div>
+
+<script>
+    let randomNumber = Math.floor(Math.random() * 50) + 1;
+    let attemptsLeft = 5;
+
+    function checkGuess() {
+        const guess = Number(document.getElementById("guess").value);
+        const result = document.getElementById("result");
+        const attemptsDisplay = document.getElementById("attempts");
+
+        if (attemptsLeft > 0) {
+            if (guess === randomNumber) {
+                result.textContent = Correct! You guessed the number!;
+                result.style.color = "green";
+                resetGame();
+            } else if (guess > randomNumber) {
+                result.textContent = "Too high! Try again.";
+                result.style.color = "red";
+            } else {
+                result.textContent = "Too low! Try again.";
+                result.style.color = "red";
+            }
+
+            attemptsLeft--;
+            attemptsDisplay.textContent = Attempts left: ${attemptsLeft};
+
+            if (attemptsLeft === 0) {
+                result.textContent = Game Over! The number was ${randomNumber}.;
+                result.classList.add("game-over");
+                resetGame();
+            }
+        }
+    }
+
+    function resetGame() {
+        setTimeout(() => {
+            randomNumber = Math.floor(Math.random() * 50) + 1;
+            attemptsLeft = 5;
+            document.getElementById("guess").value = "";
+            document.getElementById("result").textContent = "";
+            document.getElementById("result").classList.remove("game-over");
+            document.getElementById("attempts").textContent = "Attempts left: 5";
+        }, 3000); // Reset after 3 seconds
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .quiz-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .question {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <h1>Quiz Game</h1>
+    <div id="quiz">
+        <p class="question" id="question">Loading question...</p>
+        <div class="options" id="options"></div>
+        <button onclick="nextQuestion()">Next Question</button>
+    </div>
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+    const questions = [
+        {
+            question: "What is the capital of Germany?",
+            options: ["Paris", "London", "Rome", "Berlin"],
+            correctAnswer: "Berlin"
+        },
+        {
+            question: "Which is our Planet?",
+            options: ["Earth", "Mars", "Jupiter", "Saturn"],
+            correctAnswer: "Earth"
+        },
+        {
+            question: "color of Sky?",
+            options: ["red", "blue", "yellow"],
+            correctAnswer: "blue"
+        },
+        {
+            question: "What is the largest mammal?",
+            options: ["Elephant", "Whale", "Shark", "Giraffe"],
+            correctAnswer: "Whale"
+        },
+        {
+            question: "What is the color of water?",
+            options: ["red", "blue", "green", "black"],
+            correctAnswer: "blue"
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function loadQuestion() {
+        const questionElement = document.getElementById("question");
+        const optionsElement = document.getElementById("options");
+        const currentQuestion = questions[currentQuestionIndex];
+
+        questionElement.textContent = currentQuestion.question;
+        optionsElement.innerHTML = "";
+
+        currentQuestion.options.forEach(option => {
+            const optionButton = document.createElement("button");
+            optionButton.textContent = option;
+            optionButton.onclick = () => checkAnswer(option);
+            optionsElement.appendChild(optionButton);
+            optionsElement.appendChild(document.createElement("br"));
+        });
+    }
+
+    function checkAnswer(selectedOption) {
+        const currentQuestion = questions[currentQuestionIndex];
+
+        if (selectedOption === currentQuestion.correctAnswer) {
+            score++;
+        }
+
+        currentQuestionIndex++;
+
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        const resultElement = document.getElementById("result");
+        resultElement.textContent = You scored ${score} out of ${questions.length};
+        document.getElementById("quiz").style.display = "none";
+    }
+
+    function nextQuestion() {
+        if (currentQuestionIndex < questions.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    loadQuestion();
+</script>
+
+</body>
+</html>
